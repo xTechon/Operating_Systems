@@ -6,32 +6,6 @@
 */
 #include "headers.h"
 
-/*
-** counts how many characters are in an argument from a pointer
-** takes into account if the argument includes "" or ''
-*/
-int callLength(char *line) {
-  char cur = '\0';
-  int i = 0;
-  if (line[0] == '\"') {
-    while (cur != '\"') {
-      cur = line[i];
-      i++;
-    }
-  } else if (line[0] == '\'') {
-    while (cur != '\'') {
-      cur = line[i];
-      i++;
-    }
-  } else {
-    while (cur != ' ') {
-      cur = line[i];
-      i++;
-    }
-  }
-  return i;
-} // end callLength()
-
 // send a system command i is system("command string here");
 int main() {
   // assign variables
@@ -46,12 +20,6 @@ int main() {
   arg2 = malloc(1024 * sizeof(char));
   combine = malloc(1024 * sizeof(char));
 
-  // clear memory
-  // memset(command, '\0', 1024);
-  // memset(arg1, '\0', 1024);
-  // memset(arg2, '\0', 1024);
-  // memset(combine, '\0', 1024);
-
   // prompt
   printf("\nDOS command interpreter for Linux\n");
 
@@ -60,10 +28,6 @@ int main() {
     fflush(stdout);
 
     memset(line, '\0', 1024);
-    // memset(command, '\0', 1024);
-    // memset(arg1, '\0', 1024);
-    // memset(arg2, '\0', 1024);
-    // memset(combine, '\0', 1024);
 
     fgets(line, 1024, stdin); // get the whole input
     // printf("\nread input");
@@ -91,7 +55,6 @@ int main() {
           sprintf(combine, "ls %s", arg1);
         } else
           sprintf(combine, "ls");
-        // printf("\narg1: %s", arg1);
         system(combine);
       } else if (strcmp("del", command) == 0) {
         arg1 = strtok(NULL, catchall);
@@ -121,8 +84,6 @@ int main() {
       printf("Invalid Command\n");
       break;
     }
-    // process input and seperate into args
-    // keep in mind spaces are allowed if there are "" or ''
   }
   return 0;
 }
