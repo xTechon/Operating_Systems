@@ -9,5 +9,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_executable(BankersAlgo
     src/main.cpp
+    src/file.cpp
+    src/staffer.cpp
     src/banker.h
   )
