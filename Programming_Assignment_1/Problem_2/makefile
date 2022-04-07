@@ -7,3 +7,4 @@ main.o: main.c headers.h
 
 clean:
 	rm *.o
+	rm *.gch

@@ -2,11 +2,31 @@ import java.util.Queue;
 
 public class Consumer extends Thread {
 
-  public Consumer(Queue<Integer> sharedBuffer) {
+  public Consumer(Queue<Integer> sharedBuffer, int waitTimer) {
     this.sharedBuffer = sharedBuffer;
+    this.waitTimer = waitTimer;
+    this.stop = false;
   }
 
-  Queue<Integer> sharedBuffer;
+  public boolean isStop() {
+    return stop;
+  }
+
+  public void setStop(boolean stop) {
+    this.stop = stop;
+  }
+
+  private Queue<Integer> sharedBuffer;
+  private int waitTimer;
+  private boolean stop;
+
+  public int getWaitTimer() {
+    return waitTimer;
+  }
+
+  public void setWaitTimer(int waitTimer) {
+    this.waitTimer = waitTimer;
+  }
 
   // Consumer Stuff here
   public void consTest() {
@@ -16,7 +36,7 @@ public class Consumer extends Thread {
 
   public void run() {
     int number = 0;
-    while (true) {
+    while (!stop) {
       synchronized (sharedBuffer) {
         while (sharedBuffer.isEmpty()) {
           try {
@@ -26,9 +46,16 @@ public class Consumer extends Thread {
             e.printStackTrace();
           }
         }
+        //
         number = sharedBuffer.remove();
-        System.out.printf("Removed   value: %3d\r", number);
+        System.out.printf("Removed   value: %3d\n", number);
         sharedBuffer.notify();
+      }
+      try {
+        sleep(waitTimer);
+      } catch (InterruptedException e) {
+        System.out.println("could not put producer to sleep");
+        System.out.println(e);
       }
     }
   }
