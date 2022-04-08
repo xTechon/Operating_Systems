@@ -35,9 +35,9 @@ class FileRead {
 public:
   std::string reqFile();
   Banker *CreateAcc(std::string fileName);
-  Bank::matrix_t fillMatrix(Bank::matrix_t mat, std::fstream &f,
-                            std::string word, std::string line, int proc,
-                            int res);
+  template <typename T>
+  Bank::matrix_t fillMatrix(T mat, std::fstream &f, std::string word,
+                            std::string line, int proc, int res);
 };
 
 /*
@@ -67,13 +67,13 @@ public:
 
 /*
 ** INITALIZE TODO LIST:
-** - TODO: Read Files
-** - TODO: Store Input from Files into eigen lib row vectors
-** - TODO: Need 1 Available Row Vector
-** - TODO: Need 1 Alloc Row Vector for each Process
-** - TODO: ALLOC matrix that is #procX#res
-** - TODO: Need 1 MAX Row Vector for each Process
-** - TODO: MAX matrix that is #procX#res
+** - COMPLETE Read Files
+** - COMPLETE Store Input from Files into eigen lib row vectors
+** - COMPLETE Need 1 Available Row Vector
+** - COMPLETE Need 1 Alloc Row Vector for each Process
+** - COMPLETE ALLOC matrix that is #procX#res
+** - COMPLETE Need 1 MAX Row Vector for each Process
+** - COMPLETE MAX matrix that is #procX#res
 ** - TODO: NEED = MAX - ALLOC
 ** - TODO: WORK = AVAIL
 */

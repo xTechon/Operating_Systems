@@ -28,9 +28,14 @@ Banker *FileRead::CreateAcc(std::string fileName) {
     std::cout << "Row: " << resources << " Col: " << proccesses << std::endl;
     JimBob = Banker(proccesses, resources); // Hire JimBob to create our account
 
-    // std::cout << JimBob.Alloc << std::endl;
+    // get the data for the available vector
+    JimBob.Avail = fillMatrix(JimBob.Avail, fin, word, line, 1, resources);
+
+    // std::cout << JimBob.Avail << std::endl;
+    // Data for the Allocation matrix
     JimBob.Alloc =
         fillMatrix(JimBob.Alloc, fin, word, line, proccesses, resources);
+    // Data for the Max matrix
     JimBob.Max = fillMatrix(JimBob.Max, fin, word, line, proccesses, resources);
   } else {
     std::cout << "Could not open the file\n"
@@ -40,10 +45,9 @@ Banker *FileRead::CreateAcc(std::string fileName) {
   }
   return &JimBob;
 }
-
-Bank::matrix_t FileRead::fillMatrix(Bank::matrix_t mat, std::fstream &f,
-                                    std::string word, std::string line,
-                                    int proc, int res) {
+template <typename T>
+Bank::matrix_t FileRead::fillMatrix(T mat, std::fstream &f, std::string word,
+                                    std::string line, int proc, int res) {
   for (int i = 0; i < proc; i++) { // Rows
     getline(f, line);
     // std::cout << line << std::endl;
