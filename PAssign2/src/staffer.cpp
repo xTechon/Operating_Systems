@@ -1,11 +1,9 @@
 #include "banker.h"
-/*
-int Bank::getRows() { return this->rows; }
-int Bank::getCols() { return this->cols; }
+int Banker::getRows() { return this->rows; }
+int Banker::getCols() { return this->cols; }
 
-void Bank::setRows(int row) { this->rows = row; }
-void Bank::setCols(int col) { this->cols = col; }
-*/
+void Banker::setRows(int row) { this->rows = row; }
+void Banker::setCols(int col) { this->cols = col; }
 Banker::Banker(int row, int col) {
   // std::cout << "init new Banker" << std::endl;
   rows = row;
@@ -21,3 +19,5 @@ Banker::Banker(int row, int col) {
 }
 
 Banker::Banker(void) {}
+
+void Banker::calcNeed() { this->Need = Max - Alloc; }

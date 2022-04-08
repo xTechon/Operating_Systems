@@ -8,7 +8,9 @@ int main(int argc, char **argv) {
   FileRead secretary;
   std::string fileName;
   Banker *JimBob = nullptr;
-  if (argc == 1) {
+  switch (argc) {
+    // No arguments are given
+  case 1:
     do {
       fileName = secretary.reqFile();
       if (fileName == "q") {
@@ -16,20 +18,30 @@ int main(int argc, char **argv) {
       }
       JimBob = secretary.CreateAcc(fileName);
     } while (JimBob == (Banker *)nullptr);
-  } else if (argc == 2) {
+    break;
+    // One argument is given [filePath]
+  case 2:
     JimBob = secretary.CreateAcc(argv[1]);
     if (JimBob == (Banker *)nullptr) {
       std::cout << "Invalid File Name, please run again" << std::endl;
       exit(1);
     }
-  } else {
+    break;
+    // 2 arguments are given [filePath] [requestfilePath]
+  case 3:
+  default:
     std::cout << "Usage:\n"
               << "./BankersAlgo\n"
               << "./BankersAlgo [FilePath]" << std::endl;
     exit(1);
+    break;
   }
   std::cout << "Allocation Array:\n" << JimBob->Alloc << std::endl;
   std::cout << "Max Array:\n" << JimBob->Max << std::endl;
   std::cout << "Available Vector:\n" << JimBob->Avail << std::endl;
+  JimBob->calcNeed();
+  std::cout << "Need Matrix:\n" << JimBob->Need << std::endl;
+  secretary.printStatus(JimBob->Alloc, JimBob->Max, JimBob->Need, JimBob->Avail,
+                        JimBob->getRows());
   exit(1);
 }
