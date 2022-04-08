@@ -1,27 +1,30 @@
+#include <cstddef>
+#include <cstdlib>
 #include <eigen3/Eigen/Dense>
-#include <eigen3/Eigen/src/Core/Matrix.h>
 #include <fstream>
 #include <iostream>
+#include <ostream>
 #include <string>
 
 // Defined in staffer.cpp
+
+namespace Gov {
+class Bank;
+class Banker;
+class FileRead;
+}; // namespace Gov
+
 class Bank {
 public:
-  using matrix_t = Eigen::MatrixXi;
-  using vector_t = Eigen::RowVectorXi;
-  // getters and setters
-  int getRows();
-  void setRows(int row);
-  int getCols();
-  void setCols(int col);
-
-private:
-  static int rows;
-  static int cols;
+  typedef Eigen::MatrixXi matrix_t;
+  typedef Eigen::RowVectorXi vector_t;
+  int rows;
+  int cols;
 };
 
 class Banker : Bank {
 public:
+  Banker(void);
   Banker(int row, int col);
   matrix_t Alloc, Max;
   vector_t Avail;
@@ -31,7 +34,10 @@ public:
 class FileRead {
 public:
   std::string reqFile();
-  void DepositFunds(Bank NavyFederal);
+  Banker *CreateAcc(std::string fileName);
+  Bank::matrix_t fillMatrix(Bank::matrix_t mat, std::fstream &f,
+                            std::string word, std::string line, int proc,
+                            int res);
 };
 
 /*
@@ -44,14 +50,15 @@ public:
 /*
 ** FILE FORMAT AS CSV, ALL INTS:
 ** #res,#procs\n
+** #Avail vector: 0,1,...,#res
 ** #ALLOCATION ROWS
-** 0,...,#res\n
+** 0,1,...,#res\n
 ** .
 ** .
 ** .
 ** #procs
 ** #MAX ROWS
-** 0,...,#res\n
+** 0,1,...,#res\n
 ** .
 ** .
 ** .
