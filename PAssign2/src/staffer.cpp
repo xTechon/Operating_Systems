@@ -1,4 +1,5 @@
 #include "banker.h"
+#include <string>
 int Banker::getRows() { return this->rows; }
 int Banker::getCols() { return this->cols; }
 
@@ -29,40 +30,74 @@ void Banker::calcNeed() {
   this->CalcNeed = true;
 }
 
-int Banker::checkSafety() {
-  // let work and finish be vector of length m,n resp
+std::vector<std::string> Banker::checkSafety() {
+  // STEP 1:
+  //  let work and finish be vector of length m,n resp
   Bank::vector_t work = this->Avail;
   std::vector<bool> Finish;
-  std::cout << this->getRows() << std::endl;
+  std::vector<std::string> solution;
+  std::string proc;
   Finish.reserve(this->getRows());
+  // Init Finish to all false
   for (int i = 0; i < this->getRows(); i++)
     Finish.push_back(false);
-  // std::cout << "FINISH VECTOR MADE: " << Finish.size() << std::endl;
-  /*
-  for (auto i = Finish.begin(); i != Finish.end(); ++i)
-    std::cout << *i << " ";
-  std::cout << std::endl;
-  */
-  // Find an i such that both
-  // finish[i] = false
-  // needi < work
-  // if no such i exists, go to step 4
   int j = 0;
   Bank::vector_t temp = (Bank::vector_t)(this->Need.row(j));
   Bank::vector_t res;
-  for (auto i = Finish.begin(); i != Finish.end(); ++i) {
-    // convert from one row to a vector
-    temp = (Bank::vector_t)(this->Need.row(j));
-    // hopefully store the comparison
-    res = work - temp;
-    std::cout << "WORK - NEEDi = " << res << std::endl;
-    // If Needi < Work, than Work - Needi > 0 for all values
-    if ((*i == false) && (res.minCoeff() >= 0)) {
-      std::cout << "CONDITION PASSED" << std::endl;
-    } else {
-      std::cout << "CONDITION FAILED" << std::endl;
+  // Worst case is O(n^2), where n is the number of procs,
+  // because you have to itterate through all processes at least 1 time
+  // and if all are fails after every itteration, then you would have to do
+  // n loops, so n loops n times is n^2
+  // therefore:
+  for (int k = 0; k < this->getRows(); k++) {
+    j = 0; // re-initalize j
+    // iterate through the false vector
+    // STEP 2:
+    // Find an i such that both
+    // finish[i] = false
+    // needi < work
+    // if no such i exists, go to step 4
+    for (auto i = Finish.begin(); i != Finish.end(); ++i) {
+      // convert from one row to a vector
+      temp = (Bank::vector_t)(this->Need.row(j));
+      // hopefully store the comparison
+      res = work - temp;
+      // std::cout << "WORK - NEEDi = " << res << std::endl;
+      //  If Needi < Work, than Work - Needi > 0 for all values
+      if ((*i == false) && (res.minCoeff() >= 0)) {
+        // std::cout << "CONDITION PASSED" << std::endl;
+        //  STEP 3:
+        //   work = work + Alloci
+        temp = (Bank::vector_t)(this->Alloc.row(j));
+        work += temp;
+        Finish[j] = true; //  Finish[i] = true
+        // std::cout << "WORK + ALLOCi = " << work << std::endl;
+        // std::cout << "FINISH[i] = " << *i << std::endl;
+        //  Push Process Number to the solution vector
+        proc = "P" + (std::to_string(j));
+        solution.push_back(proc);
+      }
+      /*
+      else {
+        std::cout << "CONDITION FAILED" << std::endl;
+      }*/
+      j++;
+    } // for I in Finish Loop end
+    // STEP 4:
+    // If Finish[i] == true than safe state
+    bool done = true;
+    for (auto j = Finish.begin(); j != Finish.end(); ++j) {
+      if (*j == false) {
+        done = false;
+        continue;
+      }
     }
-    j++;
-  }
-  return 0;
+    if (done == true) {
+      std::cout << "SAFE STATE" << std::endl;
+      return solution;
+    }
+  } // For K loop end
+  // empty whatever was in the solution if there was anything
+  solution.clear();
+  return solution;
 }

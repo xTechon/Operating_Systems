@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 std::string FileRead::reqFile() {
   // request file name
@@ -48,6 +49,7 @@ Banker *FileRead::CreateAcc(std::string fileName) {
               << std::endl;
     return (Banker *)nullptr;
   }
+  fin.close();
   return &JimBob;
 }
 template <typename T>
@@ -76,6 +78,7 @@ void FileRead::menuPrompt() {
 }
 
 void FileRead::menuInputHandler(char input, Banker man) {
+  std::vector<std::string> solution;
   switch (input) {
   case '1':
     // Print Current State
@@ -83,7 +86,16 @@ void FileRead::menuInputHandler(char input, Banker man) {
     printStatus(man);
     break;
   case '2':
-    man.checkSafety();
+    solution = man.checkSafety();
+    if (solution.empty() != true) {
+      std::cout << "SOLUTION VECTOR: < ";
+      for (auto i = solution.begin(); i != solution.end(); ++i) {
+        std::cout << *i << " ";
+      }
+      std::cout << ">" << std::endl;
+    } else {
+      std::cout << "STATE IS UNSAFE" << std::endl;
+    }
     break;
   case '3':
   case '4':

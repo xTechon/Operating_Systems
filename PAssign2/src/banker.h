@@ -39,7 +39,7 @@ public:
   int getCols();
   void setRows(int row);
   void setCols(int col);
-  int checkSafety();
+  std::vector<std::string> checkSafety();
 };
 
 // Defined in file.cpp
