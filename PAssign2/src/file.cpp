@@ -1,5 +1,6 @@
 #include "banker.h"
 #include <eigen3/Eigen/src/Core/IO.h>
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -28,8 +29,9 @@ Banker *FileRead::CreateAcc(std::string fileName) {
     getline(str, word, ',');
     proccesses = stoi(word); // set proccesses
 
-    std::cout << "Row: " << resources << " Col: " << proccesses << std::endl;
-    JimBob = Banker(proccesses, resources); // Hire JimBob to create our account
+    // std::cout << "Row: " << resources << " Col: " << proccesses << std::endl;
+    JimBob = Banker(proccesses, resources,
+                    false); // Hire JimBob to create our account
 
     // get the data for the available vector
     JimBob.Avail = fillMatrix(JimBob.Avail, fin, word, line, 1, resources);
@@ -69,46 +71,103 @@ void FileRead::menuPrompt() {
             << "2. Check Current State's Safety\n"
             << "3. Add a request(s) for (a) Proccess(es)\n"
             << "4. Print Request State\n"
-            << "5. Check Safety of Request(s)" << std::endl;
+            << "5. Check Safety of Request(s)\n"
+            << "6. Quit" << std::endl;
 }
-/*
-void FileRead::printStatus(Bank::matrix_t Alloc, Bank::matrix_t Max,
-                           Bank::matrix_t Need, Bank::vector_t vec, int row) {
-  // std::cout << fmt::format("Proc") << std::endl;
-  std::cout << "Proc\t"
-            << "Alloc\t\t"
-            << "Max\t\t"
-            << "Need\t\t"
-            << "Available" << std::endl;
-  // First row of the state
-  std::cout << fmt::format(fmt::format("{{:<{}}}|", 10), "Proc")
-            << fmt::format(fmt::format("{{:<{}}}|", 10), "Alloc") << std::endl;
-  std::stringstream ss;
-  std::string temp;
-  ss << Alloc.row(0);
-  ss >> temp;
-  std::cout << fmt::format(fmt::format("{{:<{}}}", 11), "P0")
-            << fmt::format(fmt::format("{{:^{}}}|", 10), temp) << std::endl;
-  std::cout << "P" << 0 << "\t\t" << Alloc.row(0) << "\t" << Max.row(0)
-            << "\t\t" << Need.row(0) << "\t\t" << vec << std::endl;
-  // Subsequent Rows of the state
-  for (int i = 1; i < Alloc.rows(); i++) {
-    std::cout << "P" << i << "\t\t" << Alloc.row(i) << "\t\t" << Max.row(i)
-              << "\t\t" << Need.row(i) << std::endl;
+
+void FileRead::menuInputHandler(char input, Banker man) {
+  switch (input) {
+  case '1':
+    // Print Current State
+    std::cout << "CURRENT STATE" << std::endl;
+    printStatus(man);
+    break;
+  case '2':
+    man.checkSafety();
+    break;
+  case '3':
+  case '4':
+  case '5':
+  case '6':
+    exit(1);
+    break;
+  default:
+    std::cout << "INVALIID INPUT, RETRY" << std::endl;
   }
 }
-*/
 
-void FileRead::printStatus(Bank::matrix_t Alloc, Bank::matrix_t Max,
-                           Bank::matrix_t Need, Bank::vector_t vec, int row) {
-  Eigen::IOFormat CleanFmt(1, 0, " ", " ", " ", " ", " ");
-  // std::cout << Alloc.row(0).format(CleanFmt);
+void FileRead::printStatus(Banker man) {
   std::stringstream ss;
   std::string temp;
-  ss << Alloc.row(0).format(CleanFmt);
-  ss >> temp;
-  std::cout << fmt::format(fmt::format("{{:<{}}}|", 10), "Proc")
-            << fmt::format(fmt::format("{{:<{}}}|", 10), "Alloc") << std::endl;
-  std::cout << fmt::format(fmt::format("{{:<{}}}", 11), "P0")
-            << fmt::format(fmt::format("{{:^{}}}|", 10), temp) << std::endl;
+  int width = man.getCols() * 4;
+  int col = man.getCols();
+  int row = man.getRows();
+  // Headers
+  std::cout << fmt::format("{:<7}", "Proc")
+            << fmt::format(fmt::format("{{:<{}}}", width), "Alloc")
+            << fmt::format("{:<5}", " ")
+            << fmt::format(fmt::format("{{:<{}}}", width), "Max")
+            << fmt::format("{:<5}", " ")
+            << fmt::format(fmt::format("{{:<{}}}", width), "Need")
+            << fmt::format("{:<5}", " ")
+            << fmt::format(fmt::format("{{:<{}}}", width), "Avail")
+            << std::endl;
+  // First line to include Avail Man.Availtor
+  std::cout << fmt::format("{:<7}", "P0");
+  for (int i = 0; i < col; i++) {
+    ss.clear();
+    ss << man.Alloc(0, i);
+    ss >> temp;
+    std::cout << fmt::format(" {:>3}", temp);
+  }
+  std::cout << fmt::format("{:<5}", " ");
+  for (int i = 0; i < col; i++) {
+    ss.clear();
+    ss << man.Max(0, i);
+    ss >> temp;
+    std::cout << fmt::format(" {:>3}", temp);
+  }
+  std::cout << fmt::format("{:>5}", " ");
+  for (int i = 0; i < col; i++) {
+    ss.clear();
+    ss << man.Need(0, i);
+    ss >> temp;
+    std::cout << fmt::format(" {:>3}", temp);
+  }
+  std::cout << fmt::format("{:>5}", " ");
+  for (int i = 0; i < col; i++) {
+    ss.clear();
+    ss << man.Avail(i);
+    ss >> temp;
+    std::cout << fmt::format(" {:>3}", temp);
+  }
+  std::cout << std::endl;
+
+  // All subsequent rows
+  for (int j = 1; j < row; j++) {
+    // Proccess Number
+    std::cout << fmt::format("{}{:<6}", "P", j);
+    // Values from other Matricies
+    for (int i = 0; i < col; i++) {
+      ss.clear();
+      ss << man.Alloc(j, i);
+      ss >> temp;
+      std::cout << fmt::format(" {:>3}", temp);
+    }
+    std::cout << fmt::format("{:<5}", " ");
+    for (int i = 0; i < col; i++) {
+      ss.clear();
+      ss << man.Max(j, i);
+      ss >> temp;
+      std::cout << fmt::format(" {:>3}", temp);
+    }
+    std::cout << fmt::format("{:>5}", " ");
+    for (int i = 0; i < col; i++) {
+      ss.clear();
+      ss << man.Need(j, i);
+      ss >> temp;
+      std::cout << fmt::format(" {:>3}", temp);
+    }
+    std::cout << std::endl;
+  }
 }

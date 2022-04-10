@@ -3,11 +3,12 @@
 int main(int argc, char **argv) {
   std::cout << "Banker's Algorithm Tester\n"
             << "CSV file formats in the readme\n"
-            << "Github: https://github.com/xTechon/Operating_Systems"
+            << "Github: https://github.com/xTechon/Operating_Systems\n"
             << std::endl;
   FileRead secretary;
   std::string fileName;
   Banker *JimBob = nullptr;
+  // menu handling
   switch (argc) {
     // No arguments are given
   case 1:
@@ -36,12 +37,21 @@ int main(int argc, char **argv) {
     exit(1);
     break;
   }
-  std::cout << "Allocation Array:\n" << JimBob->Alloc << std::endl;
-  std::cout << "Max Array:\n" << JimBob->Max << std::endl;
-  std::cout << "Available Vector:\n" << JimBob->Avail << std::endl;
+  // std::cout << "Allocation Array:\n" << JimBob->Alloc << std::endl;
+  // std::cout << "Max Array:\n" << JimBob->Max << std::endl;
+  // std::cout << "Available Vector:\n" << JimBob->Avail << std::endl;
   JimBob->calcNeed();
-  std::cout << "Need Matrix:\n" << JimBob->Need << std::endl;
-  secretary.printStatus(JimBob->Alloc, JimBob->Max, JimBob->Need, JimBob->Avail,
-                        JimBob->getRows());
+  // std::cout << "Need Matrix:\n" << JimBob->Need << std::endl;
+  secretary.printStatus(*JimBob);
+  std::string in;
+  while (true) {
+    secretary.menuPrompt();
+    std::cin >> in;
+    // Make sure the input can handle extreneous input
+    if (in.length() < 2)
+      secretary.menuInputHandler(in[0], *JimBob);
+    else
+      std::cout << "INVALIID INPUT, RETRY" << std::endl;
+  }
   exit(1);
 }

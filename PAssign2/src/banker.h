@@ -26,14 +26,20 @@ public:
 class Banker : Bank {
 public:
   Banker(void);
-  Banker(int row, int col);
+  // bool req sets if the banker is a request or not
+  Banker(int row, int col, bool req); // Class constructor
   void calcNeed();
+  bool CalcNeed; // whether need has been calculated
+                 // [false = need not calculated]
+                 // [true = need calculated]
+  bool Req;      // whether this instance is a request or not
   matrix_t Alloc, Max, Need;
   vector_t Avail;
   int getRows();
   int getCols();
   void setRows(int row);
   void setCols(int col);
+  int checkSafety();
 };
 
 // Defined in file.cpp
@@ -45,8 +51,8 @@ public:
   Bank::matrix_t fillMatrix(T mat, std::fstream &f, std::string word,
                             std::string line, int proc, int res);
   void menuPrompt();
-  void printStatus(Bank::matrix_t Alloc, Bank::matrix_t Max,
-                   Bank::matrix_t Need, Bank::vector_t vec, int row);
+  void menuInputHandler(char input, Banker man);
+  void printStatus(Banker man);
 };
 
 /*
@@ -69,7 +75,7 @@ public:
 
 /*
 ** SAFETY ALGORITHM
-** - TODO: Print Current State
+** - COMPLETE: Print Current State
 ** - TODO: CHECK ALLOC < MAX
 ** - TODO: NEED = MAX - ALLOC
 ** - TODO: WORK = AVAIL
