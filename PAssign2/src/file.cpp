@@ -111,7 +111,7 @@ void FileRead::menuInputHandler(char input, Banker man) {
 void FileRead::printStatus(Banker man) {
   std::stringstream ss;
   std::string temp;
-  int width = man.getCols() * 4;
+  int width = man.getCols() * 3;
   int col = man.getCols();
   int row = man.getRows();
   // Headers
@@ -130,28 +130,28 @@ void FileRead::printStatus(Banker man) {
     ss.clear();
     ss << man.Alloc(0, i);
     ss >> temp;
-    std::cout << fmt::format(" {:>3}", temp);
+    std::cout << fmt::format("{:>3}", temp);
   }
   std::cout << fmt::format("{:<5}", " ");
   for (int i = 0; i < col; i++) {
     ss.clear();
     ss << man.Max(0, i);
     ss >> temp;
-    std::cout << fmt::format(" {:>3}", temp);
+    std::cout << fmt::format("{:>3}", temp);
   }
   std::cout << fmt::format("{:>5}", " ");
   for (int i = 0; i < col; i++) {
     ss.clear();
     ss << man.Need(0, i);
     ss >> temp;
-    std::cout << fmt::format(" {:>3}", temp);
+    std::cout << fmt::format("{:>3}", temp);
   }
   std::cout << fmt::format("{:>5}", " ");
   for (int i = 0; i < col; i++) {
     ss.clear();
     ss << man.Avail(i);
     ss >> temp;
-    std::cout << fmt::format(" {:>3}", temp);
+    std::cout << fmt::format("{:>3}", temp);
   }
   std::cout << std::endl;
 
@@ -164,21 +164,21 @@ void FileRead::printStatus(Banker man) {
       ss.clear();
       ss << man.Alloc(j, i);
       ss >> temp;
-      std::cout << fmt::format(" {:>3}", temp);
+      std::cout << fmt::format("{:>3}", temp);
     }
     std::cout << fmt::format("{:<5}", " ");
     for (int i = 0; i < col; i++) {
       ss.clear();
       ss << man.Max(j, i);
       ss >> temp;
-      std::cout << fmt::format(" {:>3}", temp);
+      std::cout << fmt::format("{:>3}", temp);
     }
     std::cout << fmt::format("{:>5}", " ");
     for (int i = 0; i < col; i++) {
       ss.clear();
       ss << man.Need(j, i);
       ss >> temp;
-      std::cout << fmt::format(" {:>3}", temp);
+      std::cout << fmt::format("{:>3}", temp);
     }
     std::cout << std::endl;
   }
