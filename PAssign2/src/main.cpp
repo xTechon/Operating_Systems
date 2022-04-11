@@ -44,12 +44,13 @@ int main(int argc, char **argv) {
   // std::cout << "Need Matrix:\n" << JimBob->Need << std::endl;
   secretary.printStatus(*JimBob);
   std::string in;
+  std::vector<Request> reqs; // create a vector for requests
   while (true) {
     secretary.menuPrompt();
     std::cin >> in;
     // Make sure the input can handle extreneous input
     if (in.length() < 2)
-      secretary.menuInputHandler(in[0], *JimBob);
+      secretary.menuInputHandler(in[0], *JimBob, &reqs);
     else
       std::cout << "INVALIID INPUT, RETRY" << std::endl;
   }

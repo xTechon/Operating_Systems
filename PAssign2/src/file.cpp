@@ -71,15 +71,17 @@ void FileRead::menuPrompt() {
   std::cout << "Choose Options:\n"
             << "1. Print Current State\n"
             << "2. Check Current State's Safety\n"
-            << "3. Add a request(s) for (a) Proccess(es)\n"
+            << "3. Add a request for a Proccess\n"
             << "4. Print Request State\n"
             << "5. Check Safety of Request(s)\n"
             << "6. Restart with a Randomized State\n"
             << "7. Quit" << std::endl;
 }
 
-void FileRead::menuInputHandler(char input, Banker man) {
+void FileRead::menuInputHandler(char input, Banker man,
+                                std::vector<Request> *reqs) {
   std::vector<std::string> solution;
+  std::string fileName;
   switch (input) {
   case '1':
     // Print Current State
@@ -99,9 +101,14 @@ void FileRead::menuInputHandler(char input, Banker man) {
     }
     break;
   case '3':
+    std::cout << "Enter Request File Name: ";
+    std::cin >> fileName;
+    reqs = genReqQueue(fileName);
+    break;
   case '4':
   case '5':
   case '6':
+  case '7':
     exit(1);
     break;
   default:
@@ -183,4 +190,16 @@ void FileRead::printStatus(Banker man) {
     }
     std::cout << std::endl;
   }
+}
+
+std::vector<Request> *FileRead::genReqQueue(std::string fileName) {
+  static std::vector<Request> *queue;
+  std::string line, word;
+  static std::fstream fin(fileName, std::ios::in);
+  if (fin.is_open()) {
+    std::cout << "Request File " << fileName << " Opened" << std::endl;
+    getline(fin, line);
+    std::stringstream str(line);
+  }
+  return queue;
 }

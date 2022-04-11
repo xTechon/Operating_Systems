@@ -6,6 +6,7 @@
 #include <iostream>
 #include <ostream>
 #include <string>
+#include <vector>
 
 // Defined in staffer.cpp
 
@@ -32,7 +33,7 @@ public:
   bool CalcNeed; // whether need has been calculated
                  // [false = need not calculated]
                  // [true = need calculated]
-  bool Req;      // whether this instance is a request or not
+  bool Reqbool;  // whether this instance is a request or not
   matrix_t Alloc, Max, Need;
   vector_t Avail;
   int getRows();
@@ -42,16 +43,33 @@ public:
   std::vector<std::string> checkSafety();
 };
 
+// Defined in req.cpp
+class Request : Bank {
+public:
+  // Class Constructors
+  Request(Banker *mnk);
+  Request(Banker *mnk, int proc);
+  Request(Banker *mnk, vector_t req, int proc);
+  Request(vector_t req, int proc);
+  Request(Request *prev, vector_t req, int proc);
+  int proccess;
+  vector_t ReqVect;
+  int pushReq();
+  Request *prev; // pointer to the previous request state
+  class Banker man;
+};
+
 // Defined in file.cpp
 class FileRead {
 public:
   std::string reqFile();
   Banker *CreateAcc(std::string fileName);
+  std::vector<Request> *genReqQueue(std::string fileName);
   template <typename T>
   Bank::matrix_t fillMatrix(T mat, std::fstream &f, std::string word,
                             std::string line, int proc, int res);
   void menuPrompt();
-  void menuInputHandler(char input, Banker man);
+  void menuInputHandler(char input, Banker man, std::vector<Request> *reqs);
   void printStatus(Banker man);
 };
 

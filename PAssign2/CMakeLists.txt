@@ -14,6 +14,7 @@ add_executable(BankersAlgo
     src/main.cpp
     src/file.cpp
     src/staffer.cpp
+    src/req.cpp
     src/banker.h
   )
 

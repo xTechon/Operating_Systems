@@ -1,5 +1,4 @@
 #include "banker.h"
-#include <string>
 int Banker::getRows() { return this->rows; }
 int Banker::getCols() { return this->cols; }
 
@@ -15,7 +14,7 @@ Banker::Banker(int row, int col, bool req) {
   this->Alloc = Eigen::MatrixXi::Constant(rows, cols, 0);
   this->Max = matrix_t::Constant(rows, cols, 0);
   this->Avail = vector_t::Constant(cols, 0);
-  this->Req = req;
+  this->Reqbool = req;
   this->CalcNeed = false;
   // std::cout << "Alloc is of size " << Alloc.rows() << "X" << Alloc.cols()
   //<< std::endl;
