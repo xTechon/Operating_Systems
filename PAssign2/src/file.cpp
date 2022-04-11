@@ -74,7 +74,8 @@ void FileRead::menuPrompt() {
             << "3. Add a request(s) for (a) Proccess(es)\n"
             << "4. Print Request State\n"
             << "5. Check Safety of Request(s)\n"
-            << "6. Quit" << std::endl;
+            << "6. Restart with a Randomized State\n"
+            << "7. Quit" << std::endl;
 }
 
 void FileRead::menuInputHandler(char input, Banker man) {

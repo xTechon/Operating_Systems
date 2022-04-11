@@ -63,7 +63,7 @@ public:
 */
 
 /*
-** INITALIZE TODO LIST:
+** INITALIZE:
 ** - COMPLETE Read Files
 ** - COMPLETE Store Input from Files into eigen lib row vectors
 ** - COMPLETE Need 1 Available Row Vector
@@ -74,19 +74,22 @@ public:
 */
 
 /*
-** SAFETY ALGORITHM
+** SAFETY ALGORITHM:
 ** - COMPLETE: Print Current State
-** - TODO: CHECK ALLOC < MAX
-** - TODO: NEED = MAX - ALLOC
-** - TODO: WORK = AVAIL
+** - COMPLETE: CHECK ALLOC < MAX
+** - COMPLETE: NEED = MAX - ALLOC
+** - COMPLETE: WORK = AVAIL
 ** - TODO: Randomize Values
+** - TODO: Output State to .csv file
 */
 
 /*
-** GRANT REQUEST CHECK
+** GRANT REQUEST CHECK:
 ** - TODO: Add Request Feature
 **   - TODO: add by filePath manually
 **   - TODO: add by filePath argument
+**   - TODO: add in program manually
 ** - TODO: Preview state as request
 ** - TODO: Check if Request is Safe State
+** - TODO: Randomize Request
 */
