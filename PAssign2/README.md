@@ -49,6 +49,7 @@ p.s. the line endings must be `\n` and not `\n\r`
 To Batch test Requests Sequentially for a specific state, use another `.csv` but of this format:
 
 ```
+number of Requests
 ProcID, Request Vector
 ProcID, Request Vector
 ProcID, Request Vector
@@ -57,11 +58,12 @@ ProcID, Request Vector
 e.g:
 
 ```
+2
 2,0,1,1
 0,1,1,1
 ```
 
-Each line is a new seperate request, and the user will be prompted if they want to test each request against the original state or test the sequence of grating requests for a safe state.
+Declare how many requests are in the file followed by each request. Each line is a new seperate request, and the user will be prompted if they want to test each request against the original state or test the sequence of grating requests for a safe state.
 
 `
 `
