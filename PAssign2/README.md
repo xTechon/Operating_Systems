@@ -34,13 +34,34 @@ e.g.:
 
 ```
 3,3
-1,2,5
+1,9,5
 4,3,0
 3,0,6
 1,5,5
-3,12,4
-4,7,3
-7,3,9
+4,12,4
+4,7,6
+7,5,9
 ```
 
 p.s. the line endings must be `\n` and not `\n\r`
+
+## Request Format [Planned]
+To Batch test Requests Sequentially for a specific state, use another `.csv` but of this format:
+
+```
+ProcID, Request Vector
+ProcID, Request Vector
+ProcID, Request Vector
+ProcID, Request Vector
+```
+e.g:
+
+```
+2,0,1,1
+0,1,1,1
+```
+
+Each line is a new seperate request, and the user will be prompted if they want to test each request against the original state or test the sequence of grating requests for a safe state.
+
+`
+`
