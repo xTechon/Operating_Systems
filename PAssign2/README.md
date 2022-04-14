@@ -1,4 +1,12 @@
 # Banker's Algorithm Tester
+## Dependencies
+If you are on Linux, install eigen and fmt from your package manager
+
+If you are on windows, follow their install guides:
+
+https://eigen.tuxfamily.org/
+
+https://fmt.dev/
 ---
 ## Build
 Make a directory called `cmake-build-debug`
