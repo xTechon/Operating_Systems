@@ -72,6 +72,3 @@ e.g:
 ```
 
 Declare how many requests are in the file followed by each request. Each line is a new seperate request, and the user will be prompted if they want to test each request against the original state or test the sequence of grating requests for a safe state.
-
-`
-`
