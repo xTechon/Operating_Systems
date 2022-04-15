@@ -71,7 +71,7 @@ void FileRead::menuPrompt() {
   std::cout << "Choose Options:\n"
             << "1. Print Current State\n"
             << "2. Check Current State's Safety\n"
-            << "3. Add a request for a Proccess\n"
+            << "3. Queue Requests for Proccesses from File\n"
             << "4. Print Request State\n"
             << "5. Check Safety of Request(s)\n"
             << "6. Restart with a Randomized State\n"
@@ -252,8 +252,11 @@ std::vector<Request> *FileRead::genReqQueue(std::string fileName,
 
 void FileRead::printReqs(std::vector<Request> *reqs) {
   std::cout << "REQUESTS:" << std::endl;
+  int j = 0;
   for (auto i = reqs->begin(); i != reqs->end(); ++i) {
-    std::cout << "P" << i->proccess << ": " << i->ReqVect << std::endl;
+    std::cout << fmt::format("REQ{:3}: P{}: < ", j, i->proccess) << i->ReqVect
+              << " >" << std::endl;
+    j++;
   }
 }
 
