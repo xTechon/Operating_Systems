@@ -52,9 +52,13 @@ public:
   Request(Banker *mnk, vector_t req, int proc);
   Request(vector_t req, int proc);
   Request(Request *prev, vector_t req, int proc);
+  Request(Request const &source); // copy constructor
+  Request(void);
   int proccess;
   vector_t ReqVect;
   int pushReq();
+  // Just in case I need a linked list of Requests
+  // I already have a vector of requests for this though
   Request *prev; // pointer to the previous request state
   class Banker man;
 };
@@ -64,7 +68,7 @@ class FileRead {
 public:
   std::string reqFile();
   Banker *CreateAcc(std::string fileName);
-  std::vector<Request> *genReqQueue(std::string fileName);
+  std::vector<Request> *genReqQueue(std::string fileName, Banker *curState);
   template <typename T>
   Bank::matrix_t fillMatrix(T mat, std::fstream &f, std::string word,
                             std::string line, int proc, int res);

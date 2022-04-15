@@ -1,11 +1,14 @@
 #include "banker.h"
 
+Request::Request(void){};
+
 // Class Constructor Definition
 Request::Request(Banker *mnk) {
   // copies the state into the Request Class Object
   this->man = *mnk;
   // Set the request matrix to the same size as the original state
   this->ReqVect = vector_t::Constant(this->man.getCols(), 0);
+  this->prev = nullptr;
 }
 
 // In case I know which proccess the request belongs in advance
@@ -15,19 +18,23 @@ Request::Request(Banker *mnk, int proc) {
   // Set the request matrix to the same size as the original state
   this->ReqVect = vector_t::Constant(this->man.getCols(), 0);
   this->proccess = proc;
+  this->prev = nullptr;
 }
 
+// Preffered Constructor
 Request::Request(Banker *mnk, vector_t req, int proc) {
   // copies the state into the Request Class Object
   this->man = *mnk;
   // Set the request matrix to the vector passed to it
   this->ReqVect = req;
   this->proccess = proc;
+  this->prev = nullptr;
 }
 Request::Request(vector_t req, int proc) {
   // Set the request matrix to the vector passed to it
   this->ReqVect = req;
   this->proccess = proc;
+  this->prev = nullptr;
 }
 
 Request::Request(Request *prev, vector_t req, int proc) {
@@ -35,6 +42,14 @@ Request::Request(Request *prev, vector_t req, int proc) {
   this->ReqVect = req;
   this->proccess = proc;
   this->prev = prev;
+}
+
+// copy constructor
+Request::Request(Request const &source) {
+  this->ReqVect = source.ReqVect;
+  this->proccess = source.proccess;
+  this->prev = source.prev;
+  this->man = source.man;
 }
 
 int Request::pushReq() {
