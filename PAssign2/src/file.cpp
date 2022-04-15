@@ -50,6 +50,7 @@ Banker *FileRead::CreateAcc(std::string fileName) {
     return (Banker *)nullptr;
   }
   fin.close();
+  printStatus(JimBob);
   return &JimBob;
 }
 template <typename T>
@@ -82,6 +83,7 @@ void FileRead::menuInputHandler(char input, Banker man,
                                 std::vector<Request> *reqs) {
   std::vector<std::string> solution;
   std::string fileName;
+  std::string choice;
   switch (input) {
   case '1':
     // Print Current State
@@ -110,6 +112,7 @@ void FileRead::menuInputHandler(char input, Banker man,
     std::cout << "File requested: " << fileName << std::endl;
     if (reqs == (std::vector<Request> *)nullptr) {
       // create new queue here
+      printStatus(man);
       reqs = genReqQueue(fileName, &man);
     } else {
       // append to queue here
@@ -126,7 +129,24 @@ void FileRead::menuInputHandler(char input, Banker man,
       std::cout << "FAIL TO GENERATE REQUESTS" << std::endl;
     }
     break;
+  // Print Request State(s)
   case '4':
+    std::cout << "1. First Request in Queue against inital State\n"
+              << "2. Each Request in Queue against inital State" << std::endl;
+    std::cout << "Enter Option: ";
+    choice = "";
+    std::cin >> choice;
+    if (choice.length() < 2) {
+      if (choice[0] == '1') {
+        auto init = reqs->begin();
+        init->pushReq();
+        printStatus(init->man);
+      } else if (choice[0] == '2') {
+      }
+      break;
+    }
+    std::cout << "ERROR: INVALID CHOICE" << std::endl;
+    break;
   case '5':
   case '6':
   case '7':
@@ -240,7 +260,8 @@ std::vector<Request> *FileRead::genReqQueue(std::string fileName,
         getline(str, word, ',');
         temp(j) = stoi(word); // Fill in values to vector
       }
-      queue.push_back(Request(curState, temp, procTemp));
+      // printStatus(*curState);
+      queue.push_back(Request(*curState, temp, procTemp));
     }
   } else {
     std::cout << "ERROR: FAIL TO OPEN REQUEST FILE" << std::endl;
@@ -285,7 +306,8 @@ void FileRead::appReqQueue(std::string fileName, Banker *curState,
         getline(str, word, ',');
         temp(j) = stoi(word); // Fill in values to vector
       }
-      queue->push_back(Request(curState, temp, procTemp));
+      // printStatus(*curState);
+      queue->push_back(Request(*curState, temp, procTemp));
     }
   } else {
     std::cout << "ERROR: FAIL TO OPEN REQUEST FILE" << std::endl;
