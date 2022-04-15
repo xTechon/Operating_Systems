@@ -208,7 +208,7 @@ void FileRead::printStatus(Banker man) {
 std::vector<Request> *FileRead::genReqQueue(std::string fileName,
                                             Banker *curState) {
   std::cout << "STARTING REQUEST QUEUE ROUTINE" << std::endl;
-  static std::vector<Request> *queue; // create a queue
+  static std::vector<Request> queue; // create a queue
   // Request tempReq;
   std::cout << "CREATED REQUEST QUEUE VECTOR AND TEMP REQUEST" << std::endl;
   std::string line, word; // temporary buffers for the line reads
@@ -237,11 +237,11 @@ std::vector<Request> *FileRead::genReqQueue(std::string fileName,
       }
       std::cout << "ADDING REQUEST TO QUEUE" << std::endl;
       // segmentation fault rip
-      queue->push_back(Request(curState, temp, procTemp));
+      queue.push_back(Request(curState, temp, procTemp));
     }
   } else {
     std::cout << "ERROR: FAIL TO OPEN FILE" << std::endl;
     return (std::vector<Request> *)nullptr;
   }
-  return queue;
+  return &queue;
 }
