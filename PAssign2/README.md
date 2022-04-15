@@ -17,8 +17,8 @@ Run `cmake -Bcmake-build-debug -S. && cmake --build cmake-build-debug`
 in project root
 
 ## Run
-Simply type `./BankersAlgo [FilePath]`
-
+Simply type `./BankersAlgo [StateFilePath]`
+or          `./BankersAlgo [StateFilePath] [RequestFilePath]`
 or run `./BankersAlgo` to type a file path
 
 ## Input Format
@@ -54,7 +54,7 @@ e.g.:
 
 p.s. the line endings must be `\n` and not `\n\r`
 
-## Request Format [Planned]
+## Request Format 
 To Batch test Requests Sequentially for a specific state, use another `.csv` but of this format:
 
 ```
