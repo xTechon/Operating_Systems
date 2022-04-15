@@ -239,6 +239,7 @@ std::vector<Request> *FileRead::genReqQueue(std::string fileName,
     std::cout << "ERROR: FAIL TO OPEN REQUEST FILE" << std::endl;
     return (std::vector<Request> *)nullptr;
   }
+  fbin.close();
   return &queue;
 }
 
