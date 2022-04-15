@@ -20,7 +20,7 @@ Banker *FileRead::CreateAcc(std::string fileName) {
 
   std::string line, word;
   // second argument is the mode
-  static std::fstream fin(fileName, std::ios::in);
+  std::fstream fin(fileName, std::ios::in);
   if (fin.is_open()) {
     std::cout << "State File " << fileName << " Opened" << std::endl;
     getline(fin, line);
@@ -87,6 +87,7 @@ void FileRead::menuInputHandler(char input, Banker man,
     // Print Current State
     std::cout << "CURRENT STATE" << std::endl;
     printStatus(man);
+    printReqs(reqs);
     break;
   // Check the current State's Safety
   case '2':
@@ -107,7 +108,13 @@ void FileRead::menuInputHandler(char input, Banker man,
     std::cout << "Enter Request File Name: ";
     std::cin >> fileName;
     std::cout << "File requested: " << fileName << std::endl;
-    reqs = genReqQueue(fileName, &man);
+    if (reqs == (std::vector<Request> *)nullptr) {
+      // create new queue here
+      reqs = genReqQueue(fileName, &man);
+    } else {
+      // append to queue here
+      appReqQueue(fileName, &man, reqs);
+    }
     if (reqs != (std::vector<Request> *)nullptr) {
       // print queue of request to confirm
       // std::cout << "REQUEST(S) READ:" << std::endl;
@@ -244,8 +251,41 @@ std::vector<Request> *FileRead::genReqQueue(std::string fileName,
 }
 
 void FileRead::printReqs(std::vector<Request> *reqs) {
-  std::cout << "REQUEST(S) READ:" << std::endl;
+  std::cout << "REQUESTS:" << std::endl;
   for (auto i = reqs->begin(); i != reqs->end(); ++i) {
     std::cout << "P" << i->proccess << ": " << i->ReqVect << std::endl;
   }
+}
+
+void FileRead::appReqQueue(std::string fileName, Banker *curState,
+                           std::vector<Request> *queue) {
+  // Request tempReq;
+  std::string line, word; // temporary buffers for the line reads
+  Bank::vector_t temp = Bank::vector_t::Constant(
+      curState->getCols(), 0); // init a temp array to zero
+  int procTemp = 0;            // int to hold the Process ID
+  // The number of requests defined in the begining of the request csv
+  int numReq = 0;
+  // open the file
+  std::fstream fbin(fileName, std::ios::in);
+  if (fbin.is_open()) {
+    // open notification
+    std::cout << "Request File " << fileName << " Opened" << std::endl;
+    getline(fbin, line);
+    numReq = stoi(line); // get the number of requests from the file
+    for (int i = 0; i < numReq; i++) {
+      getline(fbin, line);
+      std::stringstream str(line);
+      getline(str, word, ',');
+      procTemp = stoi(word);
+      for (int j = 0; j < curState->getCols(); j++) {
+        getline(str, word, ',');
+        temp(j) = stoi(word); // Fill in values to vector
+      }
+      queue->push_back(Request(curState, temp, procTemp));
+    }
+  } else {
+    std::cout << "ERROR: FAIL TO OPEN REQUEST FILE" << std::endl;
+  }
+  fbin.close();
 }

@@ -68,7 +68,11 @@ class FileRead {
 public:
   std::string reqFile();
   Banker *CreateAcc(std::string fileName);
+  // create a new request queue
   std::vector<Request> *genReqQueue(std::string fileName, Banker *curState);
+  // Append to an existing request queue
+  void appReqQueue(std::string fileName, Banker *curState,
+                   std::vector<Request> *queue);
   template <typename T>
   Bank::matrix_t fillMatrix(T mat, std::fstream &f, std::string word,
                             std::string line, int proc, int res);
