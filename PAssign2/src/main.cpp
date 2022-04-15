@@ -8,6 +8,7 @@ int main(int argc, char **argv) {
   FileRead secretary;
   std::string fileName;
   Banker *JimBob = nullptr;
+  std::vector<Request> *reqs = nullptr; // create a vector for requests
   // menu handling
   switch (argc) {
     // No arguments are given
@@ -30,27 +31,37 @@ int main(int argc, char **argv) {
     break;
     // 2 arguments are given [filePath] [requestfilePath]
   case 3:
+    JimBob = secretary.CreateAcc(argv[1]);
+    if (JimBob == (Banker *)nullptr) {
+      std::cout << "Invalid File Name, please run again" << std::endl;
+      exit(1);
+    }
+    reqs = secretary.genReqQueue(argv[2], JimBob);
+    if (reqs == (std::vector<Request> *)nullptr) {
+      std::cout << "FAIL TO GENERATE REQUESTS" << std::endl;
+      exit(1);
+    }
+    break;
   default:
     std::cout << "Usage:\n"
               << "./BankersAlgo\n"
-              << "./BankersAlgo [FilePath]" << std::endl;
+              << "./BankersAlgo [StateFilePath]\n"
+              << "./BankersAlgo [StateFilePath] [RequestFilePath]" << std::endl;
     exit(1);
     break;
   }
-  // std::cout << "Allocation Array:\n" << JimBob->Alloc << std::endl;
-  // std::cout << "Max Array:\n" << JimBob->Max << std::endl;
-  // std::cout << "Available Vector:\n" << JimBob->Avail << std::endl;
   JimBob->calcNeed();
-  // std::cout << "Need Matrix:\n" << JimBob->Need << std::endl;
   secretary.printStatus(*JimBob);
+  if (argc == 3) {
+    secretary.printReqs(reqs);
+  }
   std::string in;
-  std::vector<Request> reqs; // create a vector for requests
   while (true) {
     secretary.menuPrompt();
     std::cin >> in;
     // Make sure the input can handle extreneous input
     if (in.length() < 2)
-      secretary.menuInputHandler(in[0], *JimBob, &reqs);
+      secretary.menuInputHandler(in[0], *JimBob, reqs);
     else
       std::cout << "INVALIID INPUT, RETRY" << std::endl;
   }

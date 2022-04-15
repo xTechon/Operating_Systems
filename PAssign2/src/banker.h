@@ -75,6 +75,7 @@ public:
   void menuPrompt();
   void menuInputHandler(char input, Banker man, std::vector<Request> *reqs);
   void printStatus(Banker man);
+  void printReqs(std::vector<Request> *queue);
 };
 
 /*
@@ -108,7 +109,7 @@ public:
 /*
 ** GRANT REQUEST CHECK:
 ** - TODO: Add Request Feature
-**   - TODO: add by filePath manually
+**   - COMPLETE: add by filePath manually
 **   - TODO: add by filePath argument
 **   - TODO: add in program manually
 ** - TODO: Preview state as request
