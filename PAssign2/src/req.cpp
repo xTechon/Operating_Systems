@@ -27,6 +27,7 @@ Request::Request(Banker *mnk, vector_t req, int proc) {
   this->man = *mnk;
   this->man.calcNeed();
   // Set the request matrix to the vector passed to it
+  this->reqPush = false;
   this->ReqVect = req;
   this->proccess = proc;
   this->prev = nullptr;
@@ -72,6 +73,7 @@ int Request::pushReq() {
       man.Alloc.row(proccess) = man.Alloc.row(proccess) + ReqVect;
       //  Needi = Needi - Reqi
       man.Need.row(proccess) = test1;
+      reqPush = true;
       return 1;
     } else {
       std::cout << "REQUEST NOT GRANTED: NOT ENOUGH RESOURCES AVAILABLE"

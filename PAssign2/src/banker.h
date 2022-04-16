@@ -57,6 +57,7 @@ public:
   int proccess;
   vector_t ReqVect;
   int pushReq();
+  bool reqPush; // used to prevent pushing the request twice
   // Just in case I need a linked list of Requests
   // I already have a vector of requests for this though
   Request *prev; // pointer to the previous request state

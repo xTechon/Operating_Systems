@@ -72,7 +72,7 @@ void FileRead::menuPrompt() {
             << "1. Print Current State\n"
             << "2. Check Current State's Safety\n"
             << "3. Queue Requests for Proccesses from File\n"
-            << "4. Print Request State\n"
+            << "4. Pretest and Print Request State\n"
             << "5. Check Safety of Request(s)\n"
             << "6. Restart with a Randomized State\n"
             << "7. Quit" << std::endl;
@@ -131,15 +131,18 @@ void FileRead::menuInputHandler(char input, Banker man,
     break;
   // Print Request State(s)
   case '4':
-    std::cout << "1. First Request in Queue against inital State\n"
-              << "2. Each Request in Queue against inital State" << std::endl;
+    std::cout
+        << "1. First Request in Queue against inital State\n"
+        << "2. A Specific Request from the Queue against the inital State\n"
+        << "3. Each Request in Queue against inital State" << std::endl;
     std::cout << "Enter Option: ";
     choice = "";
     std::cin >> choice;
     if (choice.length() < 2) {
       if (choice[0] == '1') {
         auto init = reqs->begin();
-        init->pushReq();
+        if (init->reqPush == false)
+          init->pushReq();
         printStatus(init->man);
       } else if (choice[0] == '2') {
       }
