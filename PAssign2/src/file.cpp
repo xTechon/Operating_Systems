@@ -139,12 +139,52 @@ void FileRead::menuInputHandler(char input, Banker man,
     choice = "";
     std::cin >> choice;
     if (choice.length() < 2) {
+      // Check the First Request
       if (choice[0] == '1') {
         auto init = reqs->begin();
         if (init->reqPush == false)
           init->pushReq();
         printStatus(init->man);
-      } else if (choice[0] == '2') {
+      }
+      // Check a Specific Request
+      else if (choice[0] == '2') {
+        printReqs(reqs);
+        std::cout << "ENTER REQUEST NUMBER: ";
+        choice = "";
+        std::cin >> choice;
+        int k = -1;
+        try {
+          k = stoi(choice);
+        } catch (std::invalid_argument e) {
+          std::cout << "ERROR: \"" << choice << "\" IS NOT A VALID INPUT"
+                    << std::endl;
+          break;
+        }
+        int j = 0;
+        auto i = reqs->begin();
+        for (i = reqs->begin(); i != reqs->end(); ++i) {
+          if (j == k)
+            break;
+          j++;
+        }
+        if (j == k) {
+          if (i->reqPush == false)
+            i->pushReq();
+          printStatus(i->man);
+        } else {
+          std::cout << "ERROR: REQUEST NOT IN QUEUE" << std::endl;
+          break;
+        }
+      }
+      // Check Every Request
+      else if (choice[0] == '3') {
+        int check = 0;
+        for (auto i = reqs->begin(); i != reqs->end(); ++i) {
+          if (i->reqPush == false)
+            check = i->pushReq();
+          else
+            check = i->state;
+        }
       }
       break;
     }

@@ -59,12 +59,12 @@ int Request::pushReq() {
   // STEP 1: If Reqi <= Needi goto step 2, otherwise error
   vector_t test1 =
       man.Need.row(this->proccess) - ReqVect; // To hold Needi - Reqi
-  std::cout << "NEEDi - REQ = " << test1 << std::endl;
+  std::cout << "Needi - Req = " << test1 << std::endl;
   // if Reqi <= Needi, than Needi - Reqi >= 0
   if (test1.minCoeff() >= 0) {
     // STEP 2: if Reqi <= Availi goto step 3, Pi must wait because res not avail
     vector_t test2 = man.Avail - ReqVect;
-    std::cout << "Avail - Req:\n" << test2 << std::endl;
+    std::cout << "Avail - Req = " << test2 << std::endl;
     if (test2.minCoeff() >= 0) {
       // STEP 3: Prettend to Allocate req
       //  Avail = Avail - Req
@@ -74,14 +74,17 @@ int Request::pushReq() {
       //  Needi = Needi - Reqi
       man.Need.row(proccess) = test1;
       reqPush = true;
-      return 1;
+      state = 1;
+      return 1; // Success
     } else {
       std::cout << "REQUEST NOT GRANTED: NOT ENOUGH RESOURCES AVAILABLE"
                 << std::endl;
-      return 0;
+      state = 0;
+      return 0; // Can't be Granted
     }
   } else {
     std::cout << "ERROR: REQUEST GREATER THAN NEED" << std::endl;
-    return -1;
+    state = -1;
+    return -1; // Fail
   }
 }
