@@ -25,6 +25,7 @@ Request::Request(Banker *mnk, int proc) {
 Request::Request(Banker *mnk, vector_t req, int proc) {
   // copies the state into the Request Class Object
   this->man = *mnk;
+  this->man.calcNeed();
   // Set the request matrix to the vector passed to it
   this->ReqVect = req;
   this->proccess = proc;

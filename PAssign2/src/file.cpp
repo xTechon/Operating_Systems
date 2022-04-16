@@ -50,7 +50,6 @@ Banker *FileRead::CreateAcc(std::string fileName) {
     return (Banker *)nullptr;
   }
   fin.close();
-  printStatus(JimBob);
   return &JimBob;
 }
 template <typename T>
@@ -89,6 +88,7 @@ void FileRead::menuInputHandler(char input, Banker man,
     // Print Current State
     std::cout << "CURRENT STATE" << std::endl;
     printStatus(man);
+    // printStatus(reqs->begin()->man);
     printReqs(reqs);
     break;
   // Check the current State's Safety
@@ -261,7 +261,7 @@ std::vector<Request> *FileRead::genReqQueue(std::string fileName,
         temp(j) = stoi(word); // Fill in values to vector
       }
       // printStatus(*curState);
-      queue.push_back(Request(*curState, temp, procTemp));
+      queue.push_back(Request(curState, temp, procTemp));
     }
   } else {
     std::cout << "ERROR: FAIL TO OPEN REQUEST FILE" << std::endl;
@@ -307,7 +307,7 @@ void FileRead::appReqQueue(std::string fileName, Banker *curState,
         temp(j) = stoi(word); // Fill in values to vector
       }
       // printStatus(*curState);
-      queue->push_back(Request(*curState, temp, procTemp));
+      queue->push_back(Request(curState, temp, procTemp));
     }
   } else {
     std::cout << "ERROR: FAIL TO OPEN REQUEST FILE" << std::endl;

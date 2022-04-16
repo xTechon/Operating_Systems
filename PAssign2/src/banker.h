@@ -60,7 +60,7 @@ public:
   // Just in case I need a linked list of Requests
   // I already have a vector of requests for this though
   Request *prev; // pointer to the previous request state
-  class Banker man;
+  Banker man;
 };
 
 // Defined in file.cpp
