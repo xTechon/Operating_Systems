@@ -74,8 +74,7 @@ void FileRead::menuPrompt() {
             << "3. Queue Requests for Proccesses from File\n"
             << "4. Pretest and Print Request State\n"
             << "5. Check Safety of Request(s)\n"
-            << "6. Restart with a Randomized State\n"
-            << "7. Quit" << std::endl;
+            << "6. Quit" << std::endl;
 }
 
 void FileRead::menuInputHandler(char input, Banker man,
@@ -197,9 +196,23 @@ void FileRead::menuInputHandler(char input, Banker man,
     break;
   // check request safety
   case '5':
-    checkReqSafety(reqs);
+    std::cout << "1. Check Safety of each Request Against inital state\n"
+              << "2. Check Safety of each Request Sequentially" << std::endl;
+    std::cout << "Enter Option: ";
+    choice = "";
+    std::cin >> choice;
+    if (choice.length() < 2) {
+      if (choice[0] == '1') {
+        checkReqSafety(reqs);
+        break;
+      } else if (choice[0] == '2') {
+        checkSeqReqSafety(reqs);
+        break;
+      }
+    }
+    std::cout << "ERROR: INVALID CHOICE" << std::endl;
+    break;
   case '6':
-  case '7':
     exit(1);
     break;
   default:
@@ -370,6 +383,7 @@ void FileRead::checkReqSafety(std::vector<Request> *queue) {
   int j = 0;
   for (auto i = queue->begin(); i != queue->end(); ++i) {
     std::cout << std::endl;
+    std::cout << fmt::format("REQ {}: ", j);
     if (i->reqPush == false)
       check = i->pushReq();
     else
@@ -390,6 +404,34 @@ void FileRead::checkReqSafety(std::vector<Request> *queue) {
     default:
       std::cout << "ERROR: INVALID REQUEST" << std::endl;
       break;
+    }
+    j++;
+  }
+}
+
+void FileRead::checkSeqReqSafety(std::vector<Request> *queue) {
+  int check = 0;
+  int j = 0;
+  for (auto i = queue->begin(); i != queue->end(); ++i) {
+    auto prev = i;
+    std::cout << std::endl;
+    std::cout << fmt::format("REQ {}: ", j);
+    if (i == queue->begin()) {
+      if (i->reqPush == false)
+        check = i->pushReq();
+      else
+        check = i->state;
+      printStatus(i->man);
+      procSol(i->man.checkSafety());
+    } else {
+      prev--;
+      i->man = prev->man;
+      i->man.calcNeed(); // make sure for safety
+      check = i->pushReq(check);
+      if (check != 1)
+        break;
+      printStatus(i->man);
+      procSol(i->man.checkSafety());
     }
     j++;
   }

@@ -57,6 +57,8 @@ public:
   int proccess;
   vector_t ReqVect;
   int pushReq();
+  int pushReq(int out); // Take advantage of Polymorphism to make a function
+                        // that outputs errors
   int state;    // make sure the result from pushReq is accessible after calling
   bool reqPush; // used to prevent pushing the request twice
   // Just in case I need a linked list of Requests
@@ -83,6 +85,7 @@ public:
   void printStatus(Banker man);
   void printReqs(std::vector<Request> *queue);
   void checkReqSafety(std::vector<Request> *queue);
+  void checkSeqReqSafety(std::vector<Request> *queue);
   void procSol(std::vector<std::string> solution);
 };
 
