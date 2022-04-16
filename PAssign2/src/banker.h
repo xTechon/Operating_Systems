@@ -89,7 +89,7 @@ public:
 /*
 ** OVRERALL TODO LIST:
 ** COMPLETE INITALIZE
-** TODO: SAFETY ALGORITHM
+** COMPLETE: SAFETY ALGORITHM
 ** TODO: GRANT REQUEST CHECK
 */
 
@@ -110,17 +110,18 @@ public:
 ** - COMPLETE: CHECK ALLOC < MAX
 ** - COMPLETE: NEED = MAX - ALLOC
 ** - COMPLETE: WORK = AVAIL
-** - TODO: Randomize Values
-** - TODO: Output State to .csv file
+** - NO: Randomize Values
+** - NO: Output State to .csv file
 */
 
 /*
 ** GRANT REQUEST CHECK:
-** - TODO: Add Request Feature
+** - COMPLETE: Add Request Feature
 **   - COMPLETE: add by filePath manually
-**   - TODO: add by filePath argument
-**   - TODO: add in program manually
-** - TODO: Preview state as request
+**   - COMPLETE: add by filePath argument
+**   - NO: add in program manually
+** - COMPLETE: Preview state as request
 ** - TODO: Check if Request is Safe State
-** - TODO: Randomize Request
+**   - TODO: Pipe granted request state to inital state of next request
+** - NO: Randomize Request
 */
