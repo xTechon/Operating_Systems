@@ -30,14 +30,12 @@ Banker *FileRead::CreateAcc(std::string fileName) {
     getline(str, word, ',');
     proccesses = stoi(word); // set proccesses
 
-    // std::cout << "Row: " << resources << " Col: " << proccesses << std::endl;
     JimBob = Banker(proccesses, resources,
                     false); // Hire JimBob to create our account
 
     // get the data for the available vector
     JimBob.Avail = fillMatrix(JimBob.Avail, fin, word, line, 1, resources);
 
-    // std::cout << JimBob.Avail << std::endl;
     // Data for the Allocation matrix
     JimBob.Alloc =
         fillMatrix(JimBob.Alloc, fin, word, line, proccesses, resources);
@@ -57,7 +55,6 @@ Bank::matrix_t FileRead::fillMatrix(T mat, std::fstream &f, std::string word,
                                     std::string line, int proc, int res) {
   for (int i = 0; i < proc; i++) { // Rows
     getline(f, line);
-    // std::cout << line << std::endl;
     std::stringstream str(line);
     for (int j = 0; j < res; j++) { // Columns
       getline(str, word, ',');
@@ -87,8 +84,9 @@ void FileRead::menuInputHandler(char input, Banker man,
     // Print Current State
     std::cout << "CURRENT STATE" << std::endl;
     printStatus(man);
-    // printStatus(reqs->begin()->man);
-    printReqs(reqs);
+    if (reqs != (std::vector<Request> *)nullptr) {
+      printReqs(reqs);
+    }
     break;
   // Check the current State's Safety
   case '2':
@@ -145,6 +143,7 @@ void FileRead::menuInputHandler(char input, Banker man,
                     << std::endl;
           break;
         }
+        // search for the request at a specific index
         int j = 0;
         auto i = reqs->begin();
         for (i = reqs->begin(); i != reqs->end(); ++i) {
@@ -152,6 +151,7 @@ void FileRead::menuInputHandler(char input, Banker man,
             break;
           j++;
         }
+        // Push the request after finding the request
         if (j == k) {
           if (i->reqPush == false)
             i->pushReq();
@@ -196,6 +196,7 @@ void FileRead::menuInputHandler(char input, Banker man,
     break;
   // check request safety
   case '5':
+    // input handling
     std::cout << "1. Check Safety of each Request Against inital state\n"
               << "2. Check Safety of each Request Sequentially" << std::endl;
     std::cout << "Enter Option: ";
