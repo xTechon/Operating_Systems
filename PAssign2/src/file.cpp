@@ -179,11 +179,30 @@ void FileRead::menuInputHandler(char input, Banker man,
       // Check Every Request
       else if (choice[0] == '3') {
         int check = 0;
+        int j = 0;
         for (auto i = reqs->begin(); i != reqs->end(); ++i) {
+          std::cout << std::endl;
           if (i->reqPush == false)
             check = i->pushReq();
           else
             check = i->state;
+          switch (check) {
+          case 1:
+            std::cout << fmt::format("REQ {}", j) << std::endl;
+            printStatus(i->man);
+            break;
+          case 0:
+            std::cout << "REQUEST NOT GRANTED: NOT ENOUGH RESOURCES AVAILABLE"
+                      << std::endl;
+            break;
+          case -1:
+            std::cout << "ERROR: REQUEST GREATER THAN NEED" << std::endl;
+            break;
+          default:
+            std::cout << "ERROR: INVALID REQUEST" << std::endl;
+            break;
+          }
+          j++;
         }
       }
       break;

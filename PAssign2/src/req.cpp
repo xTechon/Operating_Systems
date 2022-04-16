@@ -77,13 +77,15 @@ int Request::pushReq() {
       state = 1;
       return 1; // Success
     } else {
-      std::cout << "REQUEST NOT GRANTED: NOT ENOUGH RESOURCES AVAILABLE"
-                << std::endl;
+      // std::cout << "REQUEST NOT GRANTED: NOT ENOUGH RESOURCES AVAILABLE"
+      //           << std::endl;
+      reqPush = false;
       state = 0;
       return 0; // Can't be Granted
     }
   } else {
-    std::cout << "ERROR: REQUEST GREATER THAN NEED" << std::endl;
+    // std::cout << "ERROR: REQUEST GREATER THAN NEED" << std::endl;
+    reqPush = false;
     state = -1;
     return -1; // Fail
   }
