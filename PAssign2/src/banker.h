@@ -47,13 +47,9 @@ public:
 class Request : Bank {
 public:
   // Class Constructors
-  Request(Banker *mnk);
-  Request(Banker *mnk, int proc);
-  Request(Banker *mnk, vector_t req, int proc);
-  Request(vector_t req, int proc);
-  Request(Request *prev, vector_t req, int proc);
-  Request(Request const &source); // copy constructor
   Request(void);
+  Request(Banker *mnk, vector_t req, int proc);
+  Request(Request const &source); // copy constructor
   int proccess;
   vector_t ReqVect;
   int pushReq();
