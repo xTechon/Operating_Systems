@@ -82,6 +82,8 @@ public:
   void menuInputHandler(char input, Banker man, std::vector<Request> *reqs);
   void printStatus(Banker man);
   void printReqs(std::vector<Request> *queue);
+  void checkReqSafety(std::vector<Request> *queue);
+  void procSol(std::vector<std::string> solution);
 };
 
 /*

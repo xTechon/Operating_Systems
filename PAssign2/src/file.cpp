@@ -93,16 +93,7 @@ void FileRead::menuInputHandler(char input, Banker man,
     break;
   // Check the current State's Safety
   case '2':
-    solution = man.checkSafety();
-    if (solution.empty() != true) {
-      std::cout << "SOLUTION VECTOR: < ";
-      for (auto i = solution.begin(); i != solution.end(); ++i) {
-        std::cout << *i << " ";
-      }
-      std::cout << ">" << std::endl;
-    } else {
-      std::cout << "STATE IS UNSAFE" << std::endl;
-    }
+    procSol(man.checkSafety());
     break;
   // Add Request for a Process
   case '3':
@@ -119,11 +110,6 @@ void FileRead::menuInputHandler(char input, Banker man,
       appReqQueue(fileName, &man, reqs);
     }
     if (reqs != (std::vector<Request> *)nullptr) {
-      // print queue of request to confirm
-      // std::cout << "REQUEST(S) READ:" << std::endl;
-      // for (auto i = reqs->begin(); i != reqs->end(); ++i) {
-      //   std::cout << "P" << i->proccess << ": " << i->ReqVect << std::endl;
-      // }
       printReqs(reqs);
     } else {
       std::cout << "FAIL TO GENERATE REQUESTS" << std::endl;
@@ -209,7 +195,9 @@ void FileRead::menuInputHandler(char input, Banker man,
     }
     std::cout << "ERROR: INVALID CHOICE" << std::endl;
     break;
+  // check request safety
   case '5':
+    checkReqSafety(reqs);
   case '6':
   case '7':
     exit(1);
@@ -375,4 +363,46 @@ void FileRead::appReqQueue(std::string fileName, Banker *curState,
     std::cout << "ERROR: FAIL TO OPEN REQUEST FILE" << std::endl;
   }
   fbin.close();
+}
+
+void FileRead::checkReqSafety(std::vector<Request> *queue) {
+  int check = 0;
+  int j = 0;
+  for (auto i = queue->begin(); i != queue->end(); ++i) {
+    std::cout << std::endl;
+    if (i->reqPush == false)
+      check = i->pushReq();
+    else
+      check = i->state;
+    switch (check) {
+    case 1:
+      std::cout << fmt::format("REQ {}", j) << std::endl;
+      printStatus(i->man);
+      procSol(i->man.checkSafety());
+      break;
+    case 0:
+      std::cout << "REQUEST " << j
+                << " NOT GRANTED: NOT ENOUGH RESOURCES AVAILABLE" << std::endl;
+      break;
+    case -1:
+      std::cout << "ERROR: REQUEST GREATER THAN NEED" << std::endl;
+      break;
+    default:
+      std::cout << "ERROR: INVALID REQUEST" << std::endl;
+      break;
+    }
+    j++;
+  }
+}
+
+void FileRead::procSol(std::vector<std::string> solution) {
+  if (solution.empty() != true) {
+    std::cout << "SOLUTION VECTOR: < ";
+    for (auto i = solution.begin(); i != solution.end(); ++i) {
+      std::cout << *i << " ";
+    }
+    std::cout << ">" << std::endl;
+  } else {
+    std::cout << "STATE IS UNSAFE" << std::endl;
+  }
 }
